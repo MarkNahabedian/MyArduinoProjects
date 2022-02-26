@@ -14,6 +14,8 @@
   Download drawings and code at: https://github.com/sparkfun/SIK-Guide-Code
 */
 
+// Adding a potentiometer (wiper on pin A0) to control speed:
+const int MAX_SPEED - 150;
 
 
 //the right motor will be controlled by the motor A pins on the motor driver
@@ -62,6 +64,7 @@ void setup()
 }
 
 /********************************************************************************/
+
 void loop()
 {
   //DETECT THE DISTANCE READ BY THE DISTANCE SENSOR
@@ -72,6 +75,9 @@ void loop()
   Serial.println(" in");              // print the units
 
   if (digitalRead(switchPin) == LOW) { //if the on switch is flipped
+
+    int pot = analogRead(A0);       // int 0-1023
+    int speed = MAX_SPEED * (float(pot)/1023.0);
 
     if (distance < 10) {              //if an object is detected
       //back up and turn
@@ -84,22 +90,21 @@ void loop()
       delay(200);
 
       //back up
-      rightMotor(-255);
-      leftMotor(-255);
+      rightMotor(-speed);
+      leftMotor(-speed);
       delay(backupTime);
 
-      //turn away from obstacle
-      rightMotor(255);
-      leftMotor(-255);
+      rightMotor(speed * turn_direction);
+      leftMotor(-speed * turn_direction);
+      turn += turn_direction;
       delay(turnTime);
 
     } else {                        //if no obstacle is detected drive forward
       Serial.print(" ");
       Serial.print("Moving...");
 
-
-      rightMotor(255);
-      leftMotor(255);
+      rightMotor(speed);
+      leftMotor(speed);
     }
   } else {                        //if the switch is off then stop
 
