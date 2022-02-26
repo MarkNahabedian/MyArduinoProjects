@@ -15,7 +15,7 @@
 */
 
 // Adding a potentiometer (wiper on pin A0) to control speed:
-const int MAX_SPEED - 150;
+const int MAX_SPEED = 150;
 
 
 //the right motor will be controlled by the motor A pins on the motor driver
@@ -33,6 +33,9 @@ const int BIN1 = 8;           //control pin 1 on the motor driver for the left m
 const int trigPin = 6;
 const int echoPin = 5;
 
+const int RED_LED = 2;
+const int GREEN_LED = 4;
+
 int switchPin = 7;             //switch to turn the robot on and off
 
 float distance = 0;            //variable to store the distance measured by the distance sensor
@@ -49,6 +52,9 @@ void setup()
 
   pinMode(switchPin, INPUT_PULLUP);   //set this as a pullup to sense whether the switch is flipped
 
+  // LEDs to indicate the current activity in loop():
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
 
   //set the motor control pins as outputs
   pinMode(AIN1, OUTPUT);
@@ -64,6 +70,10 @@ void setup()
 }
 
 /********************************************************************************/
+
+const int TURN_LIMIT = 10;
+int turn = 0;
+int turn_direction = 1;
 
 void loop()
 {
@@ -82,7 +92,8 @@ void loop()
     if (distance < 10) {              //if an object is detected
       //back up and turn
       Serial.print(" ");
-      Serial.print("BACK!");
+      Serial.println("BACK!");
+      digitalWrite(RED_LED, HIGH);
 
       //stop for a moment
       rightMotor(0);
@@ -94,14 +105,23 @@ void loop()
       leftMotor(-speed);
       delay(backupTime);
 
-      rightMotor(speed * turn_direction);
-      leftMotor(-speed * turn_direction);
+      //turn away from obstacle
+      if (turn > TURN_LIMIT || turn < -TURN_LIMIT) {
+        turn_direction = - turn_direction;
+        Serial.print("turn_direction: ");
+        Serial.println(turn_direction);
+      }
+      speed = speed * turn_direction;
+      rightMotor(speed);
+      leftMotor(-speed);
       turn += turn_direction;
+      Serial.print("turn: ");
+      Serial.println(turn);
       delay(turnTime);
 
     } else {                        //if no obstacle is detected drive forward
-      Serial.print(" ");
-      Serial.print("Moving...");
+      Serial.println("Moving...");
+      digitalWrite(GREEN_LED, HIGH);
 
       rightMotor(speed);
       leftMotor(speed);
@@ -114,6 +134,8 @@ void loop()
   }
 
   delay(50);                      //wait 50 milliseconds between readings
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(GREEN_LED, LOW);
 }
 
 /********************************************************************************/
