@@ -1,0 +1,6 @@
+Measuring at the read head when it is connected to only power and
+ground from the display:
+
+D-: jittering around 3.4mV
+D+: Flat at 3V, pulled high?
+ID: jittering aropuind 4.4mV
