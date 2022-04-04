@@ -50,8 +50,8 @@ use the USB names for each pin of the connector to refer to them.
     <td>unused</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
+    <td>GND</td>
+    <td>GND</td>
   </tr>
 </table>
 
