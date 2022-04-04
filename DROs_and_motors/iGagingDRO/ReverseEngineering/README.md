@@ -28,12 +28,32 @@ The cable from the read head has a UDB Micro B connector. Though USB
 is not used to communicate between the display and read head, I will
 use the USB names for each pin of the connector to refer to them.
 
-| **USB Pin** | **DRO Use** |
-| 5V          | 3V at 20uA  }
-| D-          | clock from display  |
-| D+          | data from read head |
-| ID          | unused      |
-| GND         | GND         |
+<table>
+  <tr>
+    <th>USB Pin</th>
+    <th>DRO Use</th>
+  </tr>
+  <tr>
+    <td>5V</td>
+    <td>3V at 20uA</td>
+  </tr>
+  <tr>
+    <td>D-</td>
+    <td>clock from display</td>
+  </tr>
+  <tr>
+    <td>D+</td>
+    <td>data from read head</td>
+  </tr>
+  <tr>
+    <td>ID</td>
+    <td>unused</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
 
 Current measurements were made using an old Micronta multimeter.
 
